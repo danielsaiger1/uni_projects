@@ -149,8 +149,6 @@ SELECT
     END AS status
 FROM 
     AuftraegeMitLieferdatum;
- 
- 
 	
 INSERT INTO Alarm (start, ende, bezeichnung, typ, station_id)
 SELECT
@@ -174,3 +172,29 @@ SELECT
     END AS typ,
     FLOOR(1 + RANDOM() * 35) AS station_id
 FROM generate_series(1, 50);
+
+INSERT INTO 
+    MesswertDetails (messwert_id, messwert_name)
+VALUES 
+    (101, "Druck (Bar)"),
+    (102, "Temperatur (°C)"),
+    (103, "Leistung (kW)"),
+    (104, "Durchflussrate (l/s)"),
+    (105, "Energieverbrauch (kWh)");
+
+INSERT INTO 
+    Messwerte (ID, messwert_id, wert, start, ende, ausschuss, station_id, waermepumpe_id)
+VALUES
+    (1, 101, 5.2, '2024-11-29 08:00:00', '2024-11-29 08:30:00', FALSE, 1, 2),
+    (2, 102, 56.0, '2024-11-29 09:00:00', '2024-11-29 09:20:00', FALSE, 2, 1),
+    (3, 1033, 2.3, '2024-11-29 09:30:00', '2024-11-29 09:50:00', TRUE, 31, 4),
+    (4, 101, 6.1, '2024-11-29 10:00:00', '2024-11-29 10:25:00', FALSE, 4, 5),
+    (5, 102, 65.0, '2024-11-29 10:30:00', '2024-11-29 10:50:00', TRUE, 22, 5),
+    (6, 104, 12.5, '2024-11-29 11:00:00', '2024-11-29 11:15:00', FALSE, 6, 3), 
+    (7, 103, 3.1, '2024-11-29 11:20:00', '2024-11-29 11:40:00', FALSE, 17, 2), 
+    (8, 101, 5.8, '2024-11-29 11:45:00', '2024-11-29 12:00:00', TRUE, 29, 1),  
+    (9, 105, 1.4, '2024-11-29 12:05:00', '2024-11-29 12:25:00', FALSE, 34, 4),
+    (10, 102, 48.3, '2024-11-29 12:30:00', '2024-11-29 12:50:00', TRUE, 10, 5); 
+
+
+
