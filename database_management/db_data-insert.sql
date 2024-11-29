@@ -92,6 +92,7 @@ VALUES
     ('FutureTech Solutions', 'Gartenstr.', '17', '76133', 'Karlsruhe', 'Deutschland', 'Claudia', 'Schuster', '01705432109'),
     ('EnergiePlus GmbH', 'Wiesenstr.', '22', '47051', 'Duisburg', 'Deutschland', 'Michael', 'Koch', '01703456765');
 
+
 INSERT INTO Auftraege (kunde_id, bestelldatum, lieferdatum, status) VALUES
 (1, '2024-11-01 10:00:00', '2024-11-05 12:00:00', 'Abgeschlossen'),
 (2, '2024-11-10 14:30:00', '2024-11-15 16:00:00', 'Abgeschlossen'),
