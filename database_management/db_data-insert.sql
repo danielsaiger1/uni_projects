@@ -6,24 +6,29 @@ VALUES
     ('WP-LW-004', 'Luft-Wasser'),
     ('WP-HY-005', 'Hybrid');
 
-INSERT INTO Fertigungslinien (bezeichnung, Kapazitaet)
+INSERT INTO Fertigungslinien (bezeichnung) --ich würde die Kapazität rausnehmen, da wir sie auf Basis der Zeit und nicht auf Basis der eigentlichen Kapa berechnen
 Values 
-    ('Linie 1', 13000),
-    ('Linie 2', 12000),
-    ('Linie 3', 19000),
-    ('Linie 4', 15000),
-    ('Linie 5', 17000);
+    ('Linie 1'),
+    ('Linie 2'),
+    ('Linie 3'),
+    ('Linie 4'),
+    ('Linie 5');
+
 
 INSERT INTO WaermepumpeFertigungslinie (waermepumpe_id, fertigungslinie_id)
-SELECT 
-    w.ID AS waermepumpe_id,
-    f.ID AS fertigungslinie_id
-FROM 
-    Waermepumpen w
-JOIN 
-    Fertigungslinien f
-ON 
-    RANDOM() < 0.5;
+VALUES
+    (1, 1),
+    (3, 1),
+    (5, 1),
+    (3, 2),
+    (5, 2),
+    (3, 3),
+    (4, 3),
+    (4, 4),
+    (1, 5),
+    (2, 5),
+    (3, 5),
+    (4, 5);
 
 
 INSERT INTO Fertigungsstationen (bezeichnung, fertigungslinie_id) VALUES
@@ -86,26 +91,6 @@ VALUES
     ('CleanEnergy Co.', 'Schulstr.', '34', '30159', 'Hannover', 'Deutschland', 'Tom', 'Klein', '01708901234'),
     ('PowerTech GmbH', 'Brückenstr.', '10', '41061', 'Mönchengladbach', 'Deutschland', 'Sophie', 'Wagner', '01704567890'),
     ('BioEnergy Systems', 'Sonnenweg', '8', '67059', 'Kaiserslautern', 'Deutschland', 'Paul', 'Zimmermann', '01706123456'),
-    ('Solaris AG', 'Am Turm', '21', '96047', 'Bamberg', 'Deutschland', 'Julia', 'Hoffmann', '01707654321'),
-    ('EcoSolar Innovations', 'Bergstr.', '14', '52062', 'Aachen', 'Deutschland', 'David', 'Schulz', '01702346789'),
-    ('GreenWorld GmbH', 'Dorfstr.', '11', '70327', 'Stuttgart', 'Deutschland', 'Stefan', 'Schmitt', '01709567890'),
-    ('FutureTech Solutions', 'Gartenstr.', '17', '76133', 'Karlsruhe', 'Deutschland', 'Claudia', 'Schuster', '01705432109'),
-    ('EnergiePlus GmbH', 'Wiesenstr.', '22', '47051', 'Duisburg', 'Deutschland', 'Michael', 'Koch', '01703456765');
-
-
-INSERT INTO Auftraege (kunde_id, bestelldatum, lieferdatum, status) VALUES
-(1, '2024-11-01 10:00:00', '2024-11-05 12:00:00', 'Abgeschlossen'),
-(2, '2024-11-10 14:30:00', '2024-11-15 16:00:00', 'Abgeschlossen'),
-(3, '2024-11-12 09:00:00', '2024-11-20 18:00:00', 'In Bearbeitung'),
-(4, '2024-11-05 08:00:00', '2024-11-07 11:30:00', 'Abgeschlossen'),
-(5, '2024-11-15 11:00:00', '2024-11-18 10:00:00', 'Abgeschlossen'),
-(6, '2024-11-18 17:00:00', '2024-11-20 09:00:00', 'In Bearbeitung'),
-(1, '2024-11-20 14:00:00', '2024-11-25 17:00:00', 'Abgeschlossen'),
-(3, '2024-11-25 10:00:00', '2024-11-30 12:00:00', 'In Bearbeitung'),
-(2, '2024-11-28 13:00:00', '2024-12-02 15:00:00', 'Abgeschlossen'),
-(4, '2024-11-02 16:00:00', '2024-11-04 14:00:00', 'Abgeschlossen'),
-(5, '2024-11-10 09:30:00', '2024-11-13 13:00:00', 'Abgeschlossen'),
-(6, '2024-11-13 11:30:00', '2024-11-17 10:00:00', 'In Bearbeitung');
 
 
 ----- AUFTRAG 1
@@ -147,6 +132,7 @@ VALUES
     (12, '2024-12-04 12:00:00', '2024-12-04 15:00:00', 3),
     (13, '2024-12-04 15:15:00', '2024-12-04 17:00:00', 3),
     (14, '2024-12-04 17:10:00', '2024-12-04 18:00:00', 3)
+
 
 ---- AUFTRAG 2
 
