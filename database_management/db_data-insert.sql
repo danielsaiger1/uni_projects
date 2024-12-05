@@ -109,6 +109,72 @@ INSERT INTO Auftraege (kunde_id, bestelldatum, lieferdatum, status) VALUES
 
 
 
+INSERT INTO Auftraege (kunde_id, bestelldatum, lieferdatum, status) VALUES
+(9, '2024-12-01 10:00:00', '2024-12-05 12:00:00', 'In Bearbeitung')
+
+-- Batch 1
+INSERT INTO Auftragsbatches (auftrag_id, waermepumpe_id, fertigungslinie_id, anzahl, produktion_start, produktion_ende)
+VALUES
+(13, 1, 1, 10200, '2024-12-02 08:00:00', '2024-12-03 19:00:00');
+
+
+-- Batch 2
+INSERT INTO Auftragsbatches (auftrag_id, waermepumpe_id, fertigungslinie_id, anzahl, produktion_start, produktion_ende)
+VALUES
+(13, 3, 2, 9800, '2024-12-03 08:00:00', '2024-12-04 18:00:00');
+
+
+-- T&T Batch 1
+INSERT INTO track_trace (station_id, bearbeitungsstart, bearbeitungsende, waermepumpe_id)
+VALUES
+    (1, '2024-12-02 08:00:00', '2024-12-02 12:00:00', 1),
+    (2, '2024-12-02 12:30:00', '2024-12-02 15:00:00', 1),
+    (3, '2024-12-02 15:15:00', '2024-12-02 18:00:00', 1),
+    (4, '2024-12-03 08:00:00', '2024-11-01 11:45:00', 1),
+    (5, '2024-12-03 12:00:00', '2024-12-03 15:00:00', 1),
+    (6, '2024-12-03 15:15:00', '2024-12-03 17:00:00', 1),
+    (7, '2024-12-03 17:10:00', '2024-12-03 19:00:00', 1)
+
+
+-- T&T Batch 2
+INSERT INTO track_trace (station_id, bearbeitungsstart, bearbeitungsende, waermepumpe_id)
+VALUES
+    (8, '2024-12-03 08:00:00', '2024-12-03 12:00:00', 3),
+    (9, '2024-12-03 12:30:00', '2024-12-03 15:00:00', 3),
+    (10, '2024-12-03 15:15:00', '2024-12-03 18:00:00', 3),
+    (11, '2024-12-04 08:00:00', '2024-12-04 11:45:00', 3),
+    (12, '2024-12-04 12:00:00', '2024-12-04 15:00:00', 3),
+    (13, '2024-12-04 15:15:00', '2024-12-04 17:00:00', 3),
+    (14, '2024-12-04 17:10:00', '2024-12-04 18:00:00', 3)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 -- Fertigungsbatches einfügen
 
 -- AUFTRAG 1
