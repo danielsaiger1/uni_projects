@@ -6,13 +6,13 @@ VALUES
     ('WP-LW-004', 'Luft-Wasser'),
     ('WP-HY-005', 'Hybrid');
 
-INSERT INTO Fertigungslinien (bezeichnung) --ich würde die Kapazität rausnehmen, da wir sie auf Basis der Zeit und nicht auf Basis der eigentlichen Kapa berechnen
+INSERT INTO Fertigungslinien (bezeichnung, max_cap)
 Values 
-    ('Linie 1'),
-    ('Linie 2'),
-    ('Linie 3'),
-    ('Linie 4'),
-    ('Linie 5');
+    ('Linie 1', 16000),
+    ('Linie 2', 15000),
+    ('Linie 3', 17000),
+    ('Linie 4', 16500),
+    ('Linie 5', 16200);
 
 
 INSERT INTO Waermepumpe_Fertigungslinie (waermepumpe_id, fertigungslinie_id)

@@ -8,7 +8,8 @@ CREATE TABLE Waermepumpen (
 -- Tabelle: Fertigungslinien
 CREATE TABLE Fertigungslinien (
     ID SERIAL PRIMARY KEY, 
-    bezeichnung VARCHAR
+    bezeichnung VARCHAR,
+    max_cap INT
 );
 
 
