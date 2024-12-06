@@ -15,7 +15,7 @@ Values
     ('Linie 5');
 
 
-INSERT INTO WaermepumpeFertigungslinie (waermepumpe_id, fertigungslinie_id)
+INSERT INTO Waermepumpe_Fertigungslinie (waermepumpe_id, fertigungslinie_id)
 VALUES
     (1, 1),
     (3, 1),

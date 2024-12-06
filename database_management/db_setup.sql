@@ -13,7 +13,7 @@ CREATE TABLE Fertigungslinien (
 
 
 -- Tabelle: WaermepumpeFertigungslinie
-CREATE TABLE WaermepumpeFertigungslinie (
+CREATE TABLE Waermepumpe_Fertigungslinie (
     ID SERIAL PRIMARY KEY,
     waermepumpe_id INT, 
     fertigungslinie_id INT, 
