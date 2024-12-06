@@ -64,8 +64,6 @@ CREATE TABLE TrackAndTrace (
 );
 
 
-
-
 -- Einfügen von Beispieldaten
 
 -- 1. Kunden
