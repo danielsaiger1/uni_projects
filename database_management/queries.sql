@@ -60,6 +60,9 @@ SELECT
 FROM 
     summierte_zeiten sz, zeitinterval zi;
 
+
+
+
 --- Statistische Kennzahlen zu Störungen
 SELECT 
     station_id,
@@ -82,6 +85,31 @@ GROUP BY
 ORDER BY
 	station_id;
 -- Notiz: Man kann noch Join mit Fertigungsstationen machen, um Name der Fertigungsstation zu ziehen
+
+
+
+
+--- Ausschuss pro Auftrag
+SELECT 
+    a.auftrag_id,
+    ab.waermepumpe_id,
+    ab.fertigungslinie_id,
+    ab.anzahl,
+    ab.produktion_start,
+    ab.produktion_ende,
+    SUM(tt.anzahl_ausschuss) AS total_ausschuss
+FROM
+    auftrag a
+JOIN
+    auftrag_batches ab ON a.auftrag_id = ab.auftrag_id
+JOIN
+    track_trace tt ON ab.waermepumpe_id = tt.waermepumpe_id
+GROUP BY
+    a.auftrag_id,
+    ab.waermepumpe_id, ab.fertigungslinie_id, ab.anzahl
+ORDER BY
+    a.auftrag_id;
+
 
 
 
