@@ -18,8 +18,8 @@ CREATE TABLE waermepumpe_fertigungslinie (
     ID SERIAL PRIMARY KEY,
     waermepumpe_id INT, 
     fertigungslinie_id INT, 
-    FOREIGN KEY (waermepumpe_id) REFERENCES Waermepumpen(ID),
-    FOREIGN KEY (fertigungslinie_id) REFERENCES Fertigungslinien(ID)
+    FOREIGN KEY (waermepumpe_id) REFERENCES waermepumpe(ID),
+    FOREIGN KEY (fertigungslinie_id) REFERENCES fertigungslinie(ID)
 );
 
 
@@ -28,7 +28,7 @@ CREATE TABLE fertigungsstation (
     ID SERIAL PRIMARY KEY, 
     bezeichnung VARCHAR,
     fertigungslinie_id INT, 
-    FOREIGN KEY (fertigungslinie_id) REFERENCES Fertigungslinien(ID)
+    FOREIGN KEY (fertigungslinie_id) REFERENCES fertigungslinie(ID)
 );
 
 
@@ -53,7 +53,7 @@ CREATE TABLE auftrag (
     bestelldatum TIMESTAMP, 
     lieferdatum TIMESTAMP, 
     status VARCHAR,
-    FOREIGN KEY (kunde_id) REFERENCES Kunden(ID)
+    FOREIGN KEY (kunde_id) REFERENCES kunde(ID)
 );
 
 
@@ -66,9 +66,9 @@ CREATE TABLE auftrag_batches (
     anzahl INT, 
     produktion_start TIMESTAMP, 
     produktion_ende TIMESTAMP, 
-    FOREIGN KEY (auftrag_id) REFERENCES Auftraege(ID), 
-    FOREIGN KEY (waermepumpe_id) REFERENCES Waermepumpen(ID), 
-    FOREIGN KEY (fertigungslinie_id) REFERENCES Fertigungslinien(ID)
+    FOREIGN KEY (auftrag_id) REFERENCES auftrag(ID), 
+    FOREIGN KEY (waermepumpe_id) REFERENCES waermepumpe(ID), 
+    FOREIGN KEY (fertigungslinie_id) REFERENCES fertigungslinie(ID)
 );
 
 
@@ -82,28 +82,39 @@ CREATE TABLE alarm (
     bezeichnung VARCHAR, 
     typ warnung_typ, 
     station_id INT, 
-    FOREIGN KEY (station_id) REFERENCES Fertigungsstationen(ID)
+    FOREIGN KEY (station_id) REFERENCES fertigungsstation(ID)
 );
 
--- Tabelle: Messwerte
+-- Tabelle: track_trace
 CREATE TABLE track_trace (
     ID SERIAL PRIMARY KEY,
     station_id INT,
     bearbeitungsstart TIMESTAMP,
     bearbeitungsende TIMESTAMP,
-    ausschuss BOOLEAN, 
     waermepumpe_id INT,
-    FOREIGN KEY (station_id) REFERENCES Fertigungsstationen(ID), 
-    FOREIGN KEY (waermepumpe_id) REFERENCES Waermepumpen(ID)
-);
+    ausschuss BOOLEAN, -- TRUE = Ausschuss, FALSE = Kein Ausschuss
+    anzahl_ausschuss INT,  
+    ausschuss_messwert_id INT, 
+    FOREIGN KEY (station_id) REFERENCES fertigungsstation(ID), 
+    FOREIGN KEY (waermepumpe_id) REFERENCES waermepumpe(ID),
+    FOREIGN KEY (ausschuss_messwert_id) REFERENCES track_trace_optional(ID) 
 
--- Tabelle: track_trace_optional --> optionale Messwerte
+-- Tabelle: track_trace_optional 
 CREATE TABLE track_trace_optional (
     ID SERIAL PRIMARY KEY,
+    track_trace_id INT,
     messwert_id INT,
-    typ VARCHAR,   
-    wert FLOAT,    
-    FOREIGN KEY (messwert_id) REFERENCES track_trace(ID)
+    wert FLOAT,
+    zeit_aufzeichnung TIMESTAMP,    
+    FOREIGN KEY (track_trace_id) REFERENCES track_trace(ID),
+    FOREIGN KEY (messwert_id) REFERENCES messwert_typen(ID)
 );
+
+-- Tabelle: messwert_typen
+CREATE TABLE messwert_typen (
+    ID INT PRIMARY KEY,
+    bezeichnung VARCHAR UNIQUE
+);
+
 
 

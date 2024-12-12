@@ -86,9 +86,6 @@ ORDER BY
 	station_id;
 -- Notiz: Man kann noch Join mit Fertigungsstationen machen, um Name der Fertigungsstation zu ziehen
 
-
-
-
 --- Ausschuss pro Auftrag
 SELECT 
     a.auftrag_id,
@@ -97,7 +94,8 @@ SELECT
     ab.anzahl,
     ab.produktion_start,
     ab.produktion_ende,
-    SUM(tt.anzahl_ausschuss) AS total_ausschuss
+    (ab.anzahl - SUM(tt.anzahl_ausschuss)) AS anzahl_gutteile
+    SUM(tt.anzahl_ausschuss) AS anzahl_schlechtteile
 FROM
     auftrag a
 JOIN
@@ -108,9 +106,17 @@ GROUP BY
     a.auftrag_id,
     ab.waermepumpe_id, ab.fertigungslinie_id, ab.anzahl
 ORDER BY
-    a.auftrag_id;
+    a.auftrag_id ASC;
 
 
+--- Auswertung welcher Messwert für Ausschuss verantwortlich war
+SELECT 
+    tt.ID AS track_trace_id,
+    tto.wert AS ausschuss_wert,
+    mt.bezeichnung AS messwert_typ
+FROM track_trace tt
+LEFT JOIN track_trace_optional tto ON tt.ausschuss_messwert_id = tto.ID
+LEFT JOIN messwert_typen mt ON tto.messwert_id = mt.ID
+WHERE tt.ausschuss = TRUE;
 
-
-
+--notiz: man könnte diese query noch mit der ausschuss pro auftrag verbinden, um direkt in dieser auswertung anzuzeigen was auslöser für ausschuss war 
