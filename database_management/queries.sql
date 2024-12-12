@@ -112,11 +112,21 @@ ORDER BY
 --- Auswertung welcher Messwert für Ausschuss verantwortlich war
 SELECT 
     tt.ID AS track_trace_id,
-    tto.wert AS ausschuss_wert,
-    mt.bezeichnung AS messwert_typ
-FROM track_trace tt
-LEFT JOIN track_trace_optional tto ON tt.ausschuss_messwert_id = tto.ID
-LEFT JOIN messwert_typen mt ON tto.messwert_id = mt.ID
-WHERE tt.ausschuss = TRUE;
+    tt.waermepumpe_id,
+    tt.station_id,
+    tt.ausschuss,
+    tt.anzahl_ausschuss,
+    tto.messwert_id,
+    mt.bezeichnung AS messwert_bezeichnung,
+    tto.wert,
+    tto.zeit_aufzeichnung
+FROM 
+    track_trace tt
+JOIN 
+    track_trace_optional tto ON tt.ausschuss_messwert_id = tto.track_trace_id
+JOIN 
+    messwert_typen mt ON tto.messwert_id = mt.ID
+WHERE 
+    tt.ausschuss = TRUE;
 
 --notiz: man könnte diese query noch mit der ausschuss pro auftrag verbinden, um direkt in dieser auswertung anzuzeigen was auslöser für ausschuss war 

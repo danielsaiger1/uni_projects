@@ -12,7 +12,6 @@ CREATE TABLE fertigungslinie (
     max_cap INT
 );
 
-
 -- Tabelle: WaermepumpeFertigungslinie
 CREATE TABLE waermepumpe_fertigungslinie (
     ID SERIAL PRIMARY KEY,
@@ -22,7 +21,6 @@ CREATE TABLE waermepumpe_fertigungslinie (
     FOREIGN KEY (fertigungslinie_id) REFERENCES fertigungslinie(ID)
 );
 
-
 -- Tabelle: Fertigungsstationen
 CREATE TABLE fertigungsstation (
     ID SERIAL PRIMARY KEY, 
@@ -30,7 +28,6 @@ CREATE TABLE fertigungsstation (
     fertigungslinie_id INT, 
     FOREIGN KEY (fertigungslinie_id) REFERENCES fertigungslinie(ID)
 );
-
 
 -- Tabelle: Kunden
 CREATE TABLE kunde (
@@ -85,6 +82,13 @@ CREATE TABLE alarm (
     FOREIGN KEY (station_id) REFERENCES fertigungsstation(ID)
 );
 
+
+-- Tabelle: messwert_typen
+CREATE TABLE messwert_typen (
+    ID INT PRIMARY KEY,
+    bezeichnung VARCHAR UNIQUE
+);
+
 -- Tabelle: track_trace
 CREATE TABLE track_trace (
     ID SERIAL PRIMARY KEY,
@@ -96,8 +100,8 @@ CREATE TABLE track_trace (
     anzahl_ausschuss INT,  
     ausschuss_messwert_id INT, 
     FOREIGN KEY (station_id) REFERENCES fertigungsstation(ID), 
-    FOREIGN KEY (waermepumpe_id) REFERENCES waermepumpe(ID),
-    FOREIGN KEY (ausschuss_messwert_id) REFERENCES track_trace_optional(ID) 
+    FOREIGN KEY (waermepumpe_id) REFERENCES waermepumpe(ID)
+); 
 
 -- Tabelle: track_trace_optional 
 CREATE TABLE track_trace_optional (
@@ -105,16 +109,13 @@ CREATE TABLE track_trace_optional (
     track_trace_id INT,
     messwert_id INT,
     wert FLOAT,
-    zeit_aufzeichnung TIMESTAMP,    
-    FOREIGN KEY (track_trace_id) REFERENCES track_trace(ID),
-    FOREIGN KEY (messwert_id) REFERENCES messwert_typen(ID)
+    ausschuss BOOLEAN,
+    zeit_aufzeichnung TIMESTAMP    
 );
 
--- Tabelle: messwert_typen
-CREATE TABLE messwert_typen (
-    ID INT PRIMARY KEY,
-    bezeichnung VARCHAR UNIQUE
-);
+ALTER TABLE track_trace
+	ADD CONSTRAINT fk_ausschuss_messwert FOREIGN KEY (ausschuss_messwert_id) REFERENCES track_trace_optional(track_trace_id);
 
-
-
+ALTER TABLE track_trace_optional
+    ADD CONSTRAINT fk_track_trace FOREIGN KEY (track_trace_id) REFERENCES track_trace(ID),
+    ADD CONSTRAINT fk_messwert FOREIGN KEY (messwert_id) REFERENCES messwert_typen(ID);
