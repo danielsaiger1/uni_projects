@@ -220,16 +220,16 @@ INSERT INTO track_trace_optional (messwert_id, typ, wert)
 
 INSERT INTO alarm (start, ende, bezeichnung, typ, station_id)
 VALUES
-    ('2024-11-01 09:00:00', '2024-11-01 09:30:00', 'Übertemperatur', 'Warnung', 22),
-    ('2024-11-05 09:00:00', '2024-11-05 09:15:00', 'Verkantet', 'Störung', 14),
-    ('2024-11-09 10:00:00', '2024-11-09 10:30:00', 'Neues Material einsetzen', 'Warnung', 5),
-    ('2024-11-13 14:00:00', '2024-11-13 15:00:00', 'Maschine kann nicht weiterlaufen', 'Störung', 6),
-    ('2024-11-21 08:30:00', '2024-11-21 09:00:00', 'Übertemperatur', 'Warnung', 29),
-    ('2024-11-25 09:30:00', '2024-11-25 10:00:00', 'Verkantet', 'Störung', 9),
-    ('2024-11-29 14:00:00', '2024-11-29 14:45:00', 'Neues Material einsetzen', 'Warnung', 17),
-    ('2024-12-03 09:30:00', '2024-12-03 10:00:00', 'Maschine kann nicht weiterlaufen', 'Störung', 12),
-    ('2024-12-07 10:00:00', '2024-12-07 10:30:00', 'Übertemperatur', 'Warnung', 19),
-    ('2024-12-11 09:00:00', '2024-12-11 09:10:00', 'Verkantet', 'Störung', 29);
+    ('2024-12-02 12:30:00', '2024-12-02 12:50:00', 'Übertemperatur', 'Warnung', 29),
+    ('2024-12-03 19:40:00', '2024-12-03 19:46:00', 'Verkantet', 'Störung', 14),
+    ('2024-12-02 13:00:00', '2024-12-02 13:30:00', 'Neues Material einsetzen', 'Störung', 1),
+    ('2024-12-04 12:56:00', '2024-12-04 13:30:00', 'Maschine kann nicht weiterlaufen', 'Störung', 11),
+    ('2024-12-04 17:50:00', '2024-12-04 17:55:00', 'Drucküberschreitung', 'Warnung', 14),
+    ('2024-12-02 17:20:00', '2024-12-02 17:45:00', 'Verkantet', 'Störung', 31),
+    ('2024-12-04 14:30:00', '2024-12-04 14:50:00', 'Neues Material einsetzen', 'Störung', 17),
+    ('2024-12-02 15:55:00', '2024-12-02 16:40:00', 'Maschine kann nicht weiterlaufen', 'Störung', 31),
+    ('2024-12-03 08:50:00', '2024-12-03 09:10:00', 'Übertemperatur', 'Warnung', 8),
+    ('2024-12-04 15:40:00', '2024-12-04 16:20:00', 'Verkantet', 'Störung', 13);
 
 
 

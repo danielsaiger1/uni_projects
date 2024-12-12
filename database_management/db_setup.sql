@@ -73,12 +73,14 @@ CREATE TABLE auftrag_batches (
 
 
 -- Tabelle: Alarm
+CREATE TYPE warnung_typ AS ENUM ('Störung', 'Warnung');
+
 CREATE TABLE alarm (
     ID SERIAL PRIMARY KEY, 
     start TIMESTAMP, 
     ende TIMESTAMP, 
     bezeichnung VARCHAR, 
-    typ VARCHAR, 
+    typ warnung_typ, 
     station_id INT, 
     FOREIGN KEY (station_id) REFERENCES Fertigungsstationen(ID)
 );
