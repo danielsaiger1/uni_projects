@@ -1,4 +1,4 @@
-INSERT INTO Waermepumpen (interne_bezeichnung, typ)
+INSERT INTO waermepumpe (interne_bezeichnung, typ)
 VALUES
     ('WP-LW-001', 'Luft-Wasser'),
     ('WP-ER-002', 'Erdwärme'),
@@ -6,7 +6,7 @@ VALUES
     ('WP-LW-004', 'Luft-Wasser'),
     ('WP-HY-005', 'Hybrid');
 
-INSERT INTO Fertigungslinien (bezeichnung, max_cap)
+INSERT INTO fertigungslinie (bezeichnung, max_cap)
 Values 
     ('Linie 1', 16000),
     ('Linie 2', 15000),
@@ -15,7 +15,7 @@ Values
     ('Linie 5', 16200);
 
 
-INSERT INTO Waermepumpe_Fertigungslinie (waermepumpe_id, fertigungslinie_id)
+INSERT INTO waermepumpe_fertigungslinie (waermepumpe_id, fertigungslinie_id)
 VALUES
     (1, 1),
     (3, 1),
@@ -31,7 +31,7 @@ VALUES
     (4, 5);
 
 
-INSERT INTO Fertigungsstationen (bezeichnung, fertigungslinie_id) VALUES
+INSERT INTO fertigungsstation (bezeichnung, fertigungslinie_id) VALUES
  
 ('Station 1-1', 1),
 ('Station 1-2', 1),
@@ -75,7 +75,7 @@ INSERT INTO Fertigungsstationen (bezeichnung, fertigungslinie_id) VALUES
 
 
 
-INSERT INTO Kunden (
+INSERT INTO kunde (
     firmenname, strasse, hausnummer, postleitzahl, stadt, land,
     ansprechpartner_vorname, ansprechpartner_nachname, ansprechpartner_handynummer
 ) 
@@ -95,17 +95,17 @@ VALUES
 
 ----- AUFTRAG 1
 
-INSERT INTO Auftraege (kunde_id, bestelldatum, lieferdatum, status) VALUES
+INSERT INTO auftrag (kunde_id, bestelldatum, lieferdatum, status) VALUES
 (1, '2024-12-01 10:00:00', '2024-12-05 12:00:00', 'In Bearbeitung');
 
 -- Batch 1
-INSERT INTO Auftragsbatches (auftrag_id, waermepumpe_id, fertigungslinie_id, anzahl, produktion_start, produktion_ende)
+INSERT INTO auftrag_batches (auftrag_id, waermepumpe_id, fertigungslinie_id, anzahl, produktion_start, produktion_ende)
 VALUES
 (1, 1, 1, 10200, '2024-12-02 08:00:00', '2024-12-03 19:00:00');
 
 
 -- Batch 2
-INSERT INTO Auftragsbatches (auftrag_id, waermepumpe_id, fertigungslinie_id, anzahl, produktion_start, produktion_ende)
+INSERT INTO auftrag_batches (auftrag_id, waermepumpe_id, fertigungslinie_id, anzahl, produktion_start, produktion_ende)
 VALUES
 (1, 3, 2, 9800, '2024-12-03 08:00:00', '2024-12-04 18:00:00');
 
@@ -136,23 +136,23 @@ VALUES
 
 ---- AUFTRAG 2
 
-INSERT INTO Auftraege (kunde_id, bestelldatum, lieferdatum, status) VALUES
+INSERT INTO auftrag (kunde_id, bestelldatum, lieferdatum, status) VALUES
 (5, '2024-12-01 10:00:00', '2024-12-06 12:00:00', 'In Bearbeitung');
 
 -- Batch 1
-INSERT INTO Auftragsbatches (auftrag_id, waermepumpe_id, fertigungslinie_id, anzahl, produktion_start, produktion_ende)
+INSERT INTO auftrag_batches (auftrag_id, waermepumpe_id, fertigungslinie_id, anzahl, produktion_start, produktion_ende)
 VALUES
 (2, 5, 1, 10500, '2024-12-02 12:30:00', '2024-12-03 21:00:00');
 
 
 -- Batch 2
-INSERT INTO Auftragsbatches (auftrag_id, waermepumpe_id, fertigungslinie_id, anzahl, produktion_start, produktion_ende)
+INSERT INTO auftrag_batches (auftrag_id, waermepumpe_id, fertigungslinie_id, anzahl, produktion_start, produktion_ende)
 VALUES
 (2, 5, 2, 9000, '2024-12-03 11:00:00', '2024-12-04 21:00:00');
 
 
 -- Batch 3
-INSERT INTO Auftragsbatches (auftrag_id, waermepumpe_id, fertigungslinie_id, anzahl, produktion_start, produktion_ende)
+INSERT INTO auftrag_batches (auftrag_id, waermepumpe_id, fertigungslinie_id, anzahl, produktion_start, produktion_ende)
 VALUES
 (2, 4, 5, 10100, '2024-12-02 08:00:00', '2024-12-03 19:00:00');
 
@@ -194,11 +194,11 @@ VALUES
 
 ---- AUFTRAG 3
 
-INSERT INTO Auftraege (kunde_id, bestelldatum, lieferdatum, status) VALUES
+INSERT INTO auftrag (kunde_id, bestelldatum, lieferdatum, status) VALUES
 (3, '2024-12-01 17:00:00', '2024-12-05 12:00:00', 'In Bearbeitung');
 
 -- Batch 1
-INSERT INTO Auftragsbatches (auftrag_id, waermepumpe_id, fertigungslinie_id, anzahl, produktion_start, produktion_ende)
+INSERT INTO auftrag_batches (auftrag_id, waermepumpe_id, fertigungslinie_id, anzahl, produktion_start, produktion_ende)
 VALUES
 (3, 2, 5, 10100, '2024-12-02 10:00:00', '2024-12-03 21:00:00');
 
@@ -214,9 +214,11 @@ VALUES
     (35, '2024-12-03 19:30:00', '2024-12-03 21:00:00', 4);
 
 
+INSERT INTO track_trace_optional (messwert_id, typ, wert)
 
 
-INSERT INTO Alarm (start, ende, bezeichnung, typ, station_id)
+
+INSERT INTO alarm (start, ende, bezeichnung, typ, station_id)
 VALUES
     ('2024-11-01 09:00:00', '2024-11-01 09:30:00', 'Übertemperatur', 'Warnung', 22),
     ('2024-11-05 09:00:00', '2024-11-05 09:15:00', 'Verkantet', 'Störung', 14),

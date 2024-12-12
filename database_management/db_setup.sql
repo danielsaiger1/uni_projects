@@ -1,12 +1,12 @@
 -- Tabelle: Waermepumpen
-CREATE TABLE Waermepumpen (
+CREATE TABLE waermepumpe (
     ID SERIAL PRIMARY KEY, 
     interne_bezeichnung VARCHAR,
     typ VARCHAR
 );
 
 -- Tabelle: Fertigungslinien
-CREATE TABLE Fertigungslinien (
+CREATE TABLE fertigungslinie (
     ID SERIAL PRIMARY KEY, 
     bezeichnung VARCHAR,
     max_cap INT
@@ -14,7 +14,7 @@ CREATE TABLE Fertigungslinien (
 
 
 -- Tabelle: WaermepumpeFertigungslinie
-CREATE TABLE Waermepumpe_Fertigungslinie (
+CREATE TABLE waermepumpe_fertigungslinie (
     ID SERIAL PRIMARY KEY,
     waermepumpe_id INT, 
     fertigungslinie_id INT, 
@@ -24,7 +24,7 @@ CREATE TABLE Waermepumpe_Fertigungslinie (
 
 
 -- Tabelle: Fertigungsstationen
-CREATE TABLE Fertigungsstationen (
+CREATE TABLE fertigungsstation (
     ID SERIAL PRIMARY KEY, 
     bezeichnung VARCHAR,
     fertigungslinie_id INT, 
@@ -33,7 +33,7 @@ CREATE TABLE Fertigungsstationen (
 
 
 -- Tabelle: Kunden
-CREATE TABLE Kunden (
+CREATE TABLE kunde (
     ID SERIAL PRIMARY KEY, 
     firmenname VARCHAR, 
     strasse VARCHAR, 
@@ -47,7 +47,7 @@ CREATE TABLE Kunden (
 );
 
 -- Tabelle: Auftraege
-CREATE TABLE Auftraege (
+CREATE TABLE auftrag (
     ID SERIAL PRIMARY KEY, 
     kunde_id INT, 
     bestelldatum TIMESTAMP, 
@@ -58,7 +58,7 @@ CREATE TABLE Auftraege (
 
 
 -- Tabelle: Auftragsbatches
-CREATE TABLE Auftragsbatches (
+CREATE TABLE auftrag_batches (
     ID SERIAL PRIMARY KEY, 
     auftrag_id INT, 
     waermepumpe_id INT, 
@@ -73,7 +73,7 @@ CREATE TABLE Auftragsbatches (
 
 
 -- Tabelle: Alarm
-CREATE TABLE Alarm (
+CREATE TABLE alarm (
     ID SERIAL PRIMARY KEY, 
     start TIMESTAMP, 
     ende TIMESTAMP, 
@@ -99,7 +99,7 @@ CREATE TABLE track_trace (
 CREATE TABLE track_trace_optional (
     ID SERIAL PRIMARY KEY,
     messwert_id INT,
-    messwert_typ VARCHAR,   
+    typ VARCHAR,   
     wert FLOAT,    
     FOREIGN KEY (messwert_id) REFERENCES track_trace(ID)
 );
