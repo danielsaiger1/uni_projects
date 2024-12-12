@@ -60,8 +60,28 @@ SELECT
 FROM 
     summierte_zeiten sz, zeitinterval zi;
 
-
-
+--- Statistische Kennzahlen zu Störungen
+SELECT 
+    station_id,
+    COUNT(*) AS anzahl_stoerungen,
+    ROUND((SUM(EXTRACT(EPOCH FROM (ende - start))) / 3600), 2) AS summe_dauer_stunden,  -- Gesamte Störungsdauer in Stunden
+    ROUND((AVG(EXTRACT(EPOCH FROM (ende - start))) / 3600), 2) AS durchschnitt_dauer_stunden,  -- Durchschnittliche Störungsdauer in Stunden
+	(PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY EXTRACT(EPOCH FROM (ende - start))) / 3600)::decimal(8,2) AS q1_dauer_stunden,  -- 1. Quartil --> cast als decimal, da round funktion nicht auf percentile_cont angewendet werden kann
+    (PERCENTILE_CONT(0.50) WITHIN GROUP (ORDER BY EXTRACT(EPOCH FROM (ende - start))) / 3600)::decimal(8,2) AS median_dauer_stunden,  -- Median
+    (PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY EXTRACT(EPOCH FROM (ende - start))) / 3600)::decimal(8,2) AS q3_dauer_stunden  -- 3. Quartil
+	
+FROM 
+	alarm
+WHERE 
+    station_id IN (1, 14, 31)  -- Beispiel für spezifische stationen
+    AND start >= '2024-12-02'  -- Startdatum Zeitraum
+    AND ende <= '2024-12-04'  -- Enddatum Zeitraum
+    AND typ = 'Störung'  -- Filter auf nur Störungen --> Typ 'Warnung' wird ausgeschlossen
+GROUP BY 
+    station_id
+ORDER BY
+	station_id;
+-- Notiz: Man kann noch Join mit Fertigungsstationen machen, um Name der Fertigungsstation zu ziehen
 
 
 
