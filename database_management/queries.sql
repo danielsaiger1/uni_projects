@@ -1,5 +1,4 @@
----- Auslastung Fertigungslinien
-
+-- Auslastung Fertigungslinien
 WITH zeitinterval AS (
     SELECT 
         '2024-12-01 00:00:00'::timestamp AS startzeit,
@@ -10,7 +9,7 @@ genutzte_zeit AS (
         fertigungslinie_id,
         LEAST(produktion_ende, zi.endzeit) - GREATEST(produktion_start, zi.startzeit) AS genutzte_zeit
     FROM 
-        auftragsbatches, zeitinterval zi
+        auftrag_batches, zeitinterval zi
     WHERE 
         produktion_start < zi.endzeit AND produktion_ende > zi.startzeit
 ),
@@ -28,6 +27,7 @@ SELECT
     ROUND((sz.genutzte_sekunden / (EXTRACT(EPOCH FROM (zi.endzeit - zi.startzeit))) * 100), 2) AS auslastung_prozent
 FROM 
     summierte_zeiten sz, zeitinterval zi;
+
 
 
 ---- Auslastung Fertigungsstationen
@@ -88,25 +88,25 @@ ORDER BY
 
 --- Ausschuss pro Auftrag
 SELECT 
-    a.auftrag_id,
+    a.ID,
     ab.waermepumpe_id,
     ab.fertigungslinie_id,
     ab.anzahl,
     ab.produktion_start,
     ab.produktion_ende,
-    (ab.anzahl - SUM(tt.anzahl_ausschuss)) AS anzahl_gutteile
+    (ab.anzahl - SUM(tt.anzahl_ausschuss)) AS anzahl_gutteile,
     SUM(tt.anzahl_ausschuss) AS anzahl_schlechtteile
 FROM
     auftrag a
 JOIN
-    auftrag_batches ab ON a.auftrag_id = ab.auftrag_id
+    auftrag_batches ab ON a.ID = ab.auftrag_id
 JOIN
     track_trace tt ON ab.waermepumpe_id = tt.waermepumpe_id
 GROUP BY
-    a.auftrag_id,
-    ab.waermepumpe_id, ab.fertigungslinie_id, ab.anzahl
+    a.ID,
+    ab.waermepumpe_id, ab.fertigungslinie_id, ab.anzahl, ab.produktion_start, ab.produktion_ende
 ORDER BY
-    a.auftrag_id ASC;
+    a.ID ASC;
 
 
 --- Auswertung welcher Messwert für Ausschuss verantwortlich war
@@ -123,10 +123,10 @@ SELECT
 FROM 
     track_trace tt
 JOIN 
-    track_trace_optional tto ON tt.ausschuss_messwert_id = tto.track_trace_id
+    track_trace_optional tto ON tt.track_trace_optional_id = tto.ID
 JOIN 
     messwert_typen mt ON tto.messwert_id = mt.ID
 WHERE 
-    tt.ausschuss = TRUE;
+    tt.ausschuss = TRUE AND tto.ausschuss = TRUE;
 
 --notiz: man könnte diese query noch mit der ausschuss pro auftrag verbinden, um direkt in dieser auswertung anzuzeigen was auslöser für ausschuss war 

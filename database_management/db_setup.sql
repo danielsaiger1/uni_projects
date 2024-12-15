@@ -89,6 +89,17 @@ CREATE TABLE messwert_typen (
     bezeichnung VARCHAR UNIQUE
 );
 
+-- Tabelle: track_trace_optional 
+CREATE TABLE track_trace_optional (
+    ID SERIAL PRIMARY KEY,
+    messwert_id INT,
+    wert FLOAT,
+    ausschuss BOOLEAN,
+    zeit_aufzeichnung TIMESTAMP,
+    FOREIGN KEY (messwert_id) REFERENCES messwert_typen(ID)
+);
+
+
 -- Tabelle: track_trace
 CREATE TABLE track_trace (
     ID SERIAL PRIMARY KEY,
@@ -98,24 +109,10 @@ CREATE TABLE track_trace (
     waermepumpe_id INT,
     ausschuss BOOLEAN, -- TRUE = Ausschuss, FALSE = Kein Ausschuss
     anzahl_ausschuss INT,  
-    ausschuss_messwert_id INT, 
+    track_trace_optional_id INT, 
     FOREIGN KEY (station_id) REFERENCES fertigungsstation(ID), 
-    FOREIGN KEY (waermepumpe_id) REFERENCES waermepumpe(ID)
+    FOREIGN KEY (waermepumpe_id) REFERENCES waermepumpe(ID),
+    FOREIGN KEY (track_trace_optional_id) REFERENCES track_trace_optional(ID)
 ); 
 
--- Tabelle: track_trace_optional 
-CREATE TABLE track_trace_optional (
-    ID SERIAL PRIMARY KEY,
-    track_trace_id INT,
-    messwert_id INT,
-    wert FLOAT,
-    ausschuss BOOLEAN,
-    zeit_aufzeichnung TIMESTAMP    
-);
 
-ALTER TABLE track_trace
-	ADD CONSTRAINT fk_ausschuss_messwert FOREIGN KEY (ausschuss_messwert_id) REFERENCES track_trace_optional(track_trace_id);
-
-ALTER TABLE track_trace_optional
-    ADD CONSTRAINT fk_track_trace FOREIGN KEY (track_trace_id) REFERENCES track_trace(ID),
-    ADD CONSTRAINT fk_messwert FOREIGN KEY (messwert_id) REFERENCES messwert_typen(ID);
