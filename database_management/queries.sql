@@ -127,6 +127,6 @@ JOIN
 JOIN 
     messwert_typen mt ON tto.messwert_id = mt.ID
 WHERE 
-    tt.ausschuss = TRUE AND tto.ausschuss = TRUE;
+    tto.ausschuss = TRUE;
 
 --notiz: man könnte diese query noch mit der ausschuss pro auftrag verbinden, um direkt in dieser auswertung anzuzeigen was auslöser für ausschuss war 
