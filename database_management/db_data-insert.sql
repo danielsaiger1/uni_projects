@@ -6,6 +6,7 @@ VALUES
     ('WP-LW-004', 'Luft-Wasser'),
     ('WP-HY-005', 'Hybrid');
 
+
 INSERT INTO fertigungslinie (bezeichnung, max_cap)
 Values 
     ('Linie 1', 16000),
@@ -92,11 +93,13 @@ VALUES
     ('BioEnergy Systems', 'Sonnenweg', '8', '67059', 'Kaiserslautern', 'Deutschland', 'Paul', 'Zimmermann', '01706123456');
 
 
+
 INSERT INTO messwert_typen (ID, bezeichnung) VALUES
     (1, 'Temperatur'),
     (2, 'Druck'),
     (3, 'Feuchtigkeit'),
     (4, 'Vibration');
+
 
 
 INSERT INTO track_trace_optional (messwert_id, wert, ausschuss, zeit_aufzeichnung)
@@ -113,6 +116,7 @@ VALUES
     (4, 100.12, TRUE,'2024-12-02 17:00:00'),
     (3, 70.0, TRUE,'2024-12-02 18:55:00'), 
     (2, 130.3, TRUE,'2024-12-02 16:56:00');
+
 
 
 ----- AUFTRAG 1

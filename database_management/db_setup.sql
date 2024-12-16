@@ -53,7 +53,6 @@ CREATE TABLE auftrag (
     FOREIGN KEY (kunde_id) REFERENCES kunde(ID)
 );
 
-
 -- Tabelle: Auftragsbatches
 CREATE TABLE auftrag_batches (
     ID SERIAL PRIMARY KEY, 
@@ -68,7 +67,6 @@ CREATE TABLE auftrag_batches (
     FOREIGN KEY (fertigungslinie_id) REFERENCES fertigungslinie(ID)
 );
 
-
 -- Tabelle: Alarm
 CREATE TYPE warnung_typ AS ENUM ('Störung', 'Warnung');
 
@@ -81,7 +79,6 @@ CREATE TABLE alarm (
     station_id INT, 
     FOREIGN KEY (station_id) REFERENCES fertigungsstation(ID)
 );
-
 
 -- Tabelle: messwert_typen
 CREATE TABLE messwert_typen (
@@ -98,7 +95,6 @@ CREATE TABLE track_trace_optional (
     zeit_aufzeichnung TIMESTAMP,
     FOREIGN KEY (messwert_id) REFERENCES messwert_typen(ID)
 );
-
 
 -- Tabelle: track_trace
 CREATE TABLE track_trace (
