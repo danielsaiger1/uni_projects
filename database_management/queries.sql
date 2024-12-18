@@ -56,14 +56,13 @@ SELECT
 	(PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY EXTRACT(EPOCH FROM (ende - start))) / 3600)::decimal(8,2) AS q1_dauer_stunden,  -- 1. Quartil --> cast als decimal, da round funktion nicht auf percentile_cont angewendet werden kann
     (PERCENTILE_CONT(0.50) WITHIN GROUP (ORDER BY EXTRACT(EPOCH FROM (ende - start))) / 3600)::decimal(8,2) AS median_dauer_stunden,  -- Median
     (PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY EXTRACT(EPOCH FROM (ende - start))) / 3600)::decimal(8,2) AS q3_dauer_stunden  -- 3. Quartil
-	
 FROM 
 	alarm
 WHERE 
-    station_id IN (1, 14, 31)  -- Beispiel für spezifische stationen
-    AND start >= '2024-12-02'  -- Startdatum Zeitraum
-    AND ende <= '2024-12-04'  -- Enddatum Zeitraum
-    AND typ = 'Störung'  -- Filter auf nur Störungen --> Typ 'Warnung' wird ausgeschlossen
+    station_id IN (1, 14, 31) 
+    AND start >= '2024-12-02'  
+    AND ende <= '2024-12-04' 
+    AND typ = 'Störung' 
 GROUP BY 
     station_id
 ORDER BY
