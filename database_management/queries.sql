@@ -7,30 +7,21 @@ WITH zeitinterval AS (
 genutzte_zeit AS (
     SELECT 
         fertigungslinie_id,
-        LEAST(produktion_ende, zi.endzeit) - GREATEST(produktion_start, zi.startzeit) AS genutzte_zeit
+        SUM(EXTRACT(EPOCH FROM LEAST(produktion_ende, zi.endzeit) - GREATEST(produktion_start, zi.startzeit))) AS genutzte_sekunden
     FROM 
         auftrag_batches, zeitinterval zi
-    WHERE 
-        produktion_start < zi.endzeit AND produktion_ende > zi.startzeit
-),
-summierte_zeiten AS (
-    SELECT 
-        fertigungslinie_id,
-        SUM(EXTRACT(EPOCH FROM genutzte_zeit)) AS genutzte_sekunden
-    FROM 
-        genutzte_zeit
     GROUP BY 
         fertigungslinie_id
 )
 SELECT 
-    sz.fertigungslinie_id,
-    ROUND((sz.genutzte_sekunden / (EXTRACT(EPOCH FROM (zi.endzeit - zi.startzeit))) * 100), 2) AS auslastung_prozent
+    gz.fertigungslinie_id,
+    ROUND((gz.genutzte_sekunden / EXTRACT(EPOCH FROM (zi.endzeit - zi.startzeit)) * 100), 2) AS auslastung_prozent
 FROM 
-    summierte_zeiten sz, zeitinterval zi;
+    genutzte_zeit gz, zeitinterval zi;
 
 
 
----- Auslastung Fertigungsstationen
+-- Auslastung Fertigungsstationen
 WITH zeitinterval AS (
     SELECT 
         '2024-12-02 08:00:00'::timestamp AS startzeit,
@@ -39,26 +30,19 @@ WITH zeitinterval AS (
 genutzte_zeit AS (
     SELECT 
         station_id,
-        LEAST(bearbeitungsende, zi.endzeit) - GREATEST(bearbeitungsstart, zi.startzeit) AS genutzte_zeit
+        SUM(EXTRACT(EPOCH FROM LEAST(bearbeitungsende, zi.endzeit) - GREATEST(bearbeitungsstart, zi.startzeit))) AS genutzte_sekunden
     FROM 
         track_trace, zeitinterval zi
     WHERE 
         bearbeitungsstart < zi.endzeit AND bearbeitungsende > zi.startzeit
-),
-summierte_zeiten AS (
-    SELECT 
-        station_id,
-        SUM(EXTRACT(EPOCH FROM genutzte_zeit)) AS genutzte_sekunden
-    FROM 
-        genutzte_zeit
     GROUP BY 
         station_id
 )
 SELECT 
-    sz.station_id,
-    ROUND((sz.genutzte_sekunden / (EXTRACT(EPOCH FROM (zi.endzeit - zi.startzeit))) * 100), 2) AS auslastung_prozent
+    gz.station_id,
+    ROUND((gz.genutzte_sekunden / EXTRACT(EPOCH FROM (zi.endzeit - zi.startzeit)) * 100), 2) AS auslastung_prozent
 FROM 
-    summierte_zeiten sz, zeitinterval zi;
+    genutzte_zeit gz, zeitinterval zi;
 
 
 
