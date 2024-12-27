@@ -3,7 +3,7 @@ VALUES
     ('WP-LW-001', 'Luft-Wasser'),
     ('WP-ER-002', 'Erdwärme'),
     ('WP-GW-003', 'Grundwasser'),
-    ('WP-LW-004', 'Luft-Wasser'),
+    ('WP-LW-004', 'Luft'),
     ('WP-HY-005', 'Hybrid');
 
 
