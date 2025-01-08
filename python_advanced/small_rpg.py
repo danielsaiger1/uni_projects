@@ -6,8 +6,7 @@ Daniel Saiger
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-import random
-from abc import ABC, abstractmethod
+import random   
 import time
 from enum import Enum
 
@@ -109,12 +108,14 @@ class PlayerCharacter(Character):
     """
     Class representing a player-controlled character with weapons and attacks.
     """
-    def __init__(self, name: str, health: int, power: int = 0, weapon = None):
+    def __init__(self, name: str, health: int, power: int = 10, weapon = 'Sword'):
         """
         Initialize a player character with name, health, power, and an optional weapon.
         """
         super().__init__(name, health, power)
         self.weapon = weapon
+        self.power = power
+        self.weapon = weapon 
 
     @classmethod
     def from_default(cls, name):
@@ -127,6 +128,8 @@ class PlayerCharacter(Character):
         Returns:
             PlayerCharacter: An instance with default settings.
         """
+        
+        
         return cls(name=name, health= PlayerCharacter.default_health, power = PlayerCharacter.power, weapon = PlayerCharacter.weapon)
     
     @staticmethod
@@ -279,7 +282,7 @@ class NPC(Character):
         print(f"{self.name} attacks {target.name} and deals {damage} damage points")
         target.defend(damage)
 
-class NPC_types(Enum):
+class NpcTypes(Enum):
     """
     Enumeration representing different types of NPCs
     """
@@ -364,19 +367,19 @@ def create_character():
 
     if class_choice == '1':
         builder.set_class_type("Melee")
-        type = "melee"
+        char_type = "melee"
     elif class_choice == '2':
         builder.set_class_type("Ranged")
-        type = "ranged"
+        char_type = "ranged"
     elif class_choice == '3':
         builder.set_class_type("Summoner")
-        type = "summoner"
+        char_type = "summoner"
     else:
         print("Invalid choice")
         return None
 
     character = builder.get_character()
-    print(f"{character.name} the {type} hero has been created!")
+    print(f"{character.name} the {char_type} hero has been created!")
     return character
 
 class Arena:
@@ -404,7 +407,7 @@ class Arena:
         Args:
             char (Character): The character who may find a new weapon
         """
-        if random.choice([0,1]) == 1: # 1 = find new weapon, 0 = don't find new weaponß
+        if random.choice([0,1]) == 1: # 1 = find new weapon, 0 = don't find new weapon
             new_weapon = Weapon(
                 name = char.weapon.name, 
                 damage=int(char.weapon.damage * 1.05), 
@@ -481,15 +484,13 @@ class Arena:
             npc.name = names[random_int-1]
             npc.npc_type = str(NPC_types(random_int).name)
             if npc.npc_type == 'Dragon':
-                npc.power = int(npc.power * 1000) # Dragon is oneshot, because nobodys wins against a dragon
+                npc.power = int(npc.power * 1000) # Dragon is oneshot, because nobody wins against a dragon
             else:
                 npc.power = int(npc.power * 1.20)  # Scale NPC power by +20%
             npc.health = 100  # Reset NPC health        
 
 
-
-if __name__ == "__main__":
-
+def main():
     # Create a player character with a weapon
     player = create_character()
 
@@ -501,15 +502,18 @@ if __name__ == "__main__":
         Starts the arena battle based on user input.
         """
         choice = input("Are you ready to start the battle (Y/N)? \n :> ")
-        if choice == 'Y' or choice == 'y':
+        if choice in ("Y", "y"):
             arena.episodic_battle(player)
-        elif choice == 'N' or choice == 'n':
+        elif choice in ("N", "n"):
             print("game has been cancelled")
         else:
             print("invalid input")
 
     #start battle
     start_arena()
+
+if __name__ == "__main__":
+    main()
 
 
 
