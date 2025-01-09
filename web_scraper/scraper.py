@@ -7,7 +7,7 @@ HEADERS = {
 }
 
 #selenium nutzen um gesamte liste zu laden
-
+#Küchenstile etc. auslesen, um erkennung zu ermöglichen
 
 
 page_url = "https://www.hamburg-tourism.de/shoppen-geniessen/restaurants-cafes/restaurants-von-a-bis-z/"
