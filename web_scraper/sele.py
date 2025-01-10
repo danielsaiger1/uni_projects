@@ -21,5 +21,3 @@ shadow_root = shadow_host.shadow_root
 # Perform other interactions as necessary (e.g., clicking 'Only necessary cookies')
 deny_button = shadow_root.find_element(By.CSS_SELECTOR, "button[data-testid='uc-deny-all-button']")
 deny_button.click()
-
-

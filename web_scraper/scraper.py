@@ -16,7 +16,6 @@ driver.get(URL)
 button = driver.find_element(By.CSS_SELECTOR, '[data-testid="uc-accept-all-button"]')
 driver.execute_script("arguments[0].click();", button)
 
-
 expand_teaser = driver.find_element(By.XPATH, "//a[contains(@class, 'readMore__link')]")
 
 # Scrolle das Element in den Sichtbereich
@@ -35,7 +34,6 @@ soup = BeautifulSoup(page, "html.parser")
 teaser_list = soup.find("div", class_="teaserList-inline__page")
 
 listings = teaser_list.find_all("article", class_="listTeaser")
-
 
 restaurants: Dict[str, Dict] = {}
 
