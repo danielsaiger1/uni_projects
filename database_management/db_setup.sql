@@ -11,14 +11,15 @@ CREATE TABLE fertigungslinie (
     bezeichnung VARCHAR
 );
 
--- Tabelle: WaermepumpeFertigungslinie
+-- Tabelle: Waermepumpe_Fertigungslinie
 CREATE TABLE waermepumpe_fertigungslinie (
-    ID SERIAL PRIMARY KEY,
     waermepumpe_id INT, 
     fertigungslinie_id INT, 
+    PRIMARY KEY (waermepumpe_id, fertigungslinie_id),
     FOREIGN KEY (waermepumpe_id) REFERENCES waermepumpe(ID),
     FOREIGN KEY (fertigungslinie_id) REFERENCES fertigungslinie(ID)
 );
+
 
 -- Tabelle: Fertigungsstationen
 CREATE TABLE fertigungsstation (
