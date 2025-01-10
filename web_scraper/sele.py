@@ -22,3 +22,4 @@ shadow_root = shadow_host.shadow_root
 deny_button = shadow_root.find_element(By.CSS_SELECTOR, "button[data-testid='uc-deny-all-button']")
 deny_button.click()
 
+
