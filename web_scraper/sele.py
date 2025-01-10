@@ -1,24 +1,24 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-import time
+from selenium.webdriver.common.action_chains import ActionChains
 
-chrome_options = webdriver.ChromeOptions()
-chrome_options.add_experimental_option("detach", True)
+# Setup the webdriver (assuming you're using Chrome)
+driver = webdriver.Chrome()
 
-driver = webdriver.Chrome(options = chrome_options)
-driver.get("https://www.selenium.dev/selenium/web/web-form.html")
+# Open the target website
+driver.get("https://www.hamburg-tourism.de/shoppen-geniessen/restaurants-cafes/restaurants-von-a-bis-z/")
 
-# Handle the email input field
-email_input = driver.find_element(By.ID, "my-text-id")
-email_input.clear()  # Clear field
+# Wait for the shadow DOM to load, add an explicit wait if needed
+driver.implicitly_wait(10)  # seconds
 
-email = "admin@localhost.dev"
-email_input.send_keys(email)  # Enter text
+# Find the host element for the shadow DOM
+shadow_host = driver.find_element(By.CSS_SELECTOR, "#usercentrics-root")  # Update with the actual selector <div id="usercentrics-root" data-created-at="1736502742073" style=""></div>
 
-check_input = driver.find_element(By.ID, "my-radio-2")
-check_input.click()
+# Access the shadow root
+shadow_root = shadow_host.shadow_root
 
-time.sleep(5)
 
-submit = driver.find_element(By.CSS_SELECTOR, ".btn.btn-outline-primary.mt-3")
-submit.click()
+# Perform other interactions as necessary (e.g., clicking 'Only necessary cookies')
+deny_button = shadow_root.find_element(By.CSS_SELECTOR, "button[data-testid='uc-deny-all-button']")
+deny_button.click()
+
