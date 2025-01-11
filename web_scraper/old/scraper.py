@@ -62,12 +62,18 @@ def load_page(URL):
     finally:
         driver.quit()
 
-html = load_page(URL)
 
-if html:
-    print("HTML loaded successfully")
-else:
-    print("HTML while loading site")
+def get_html():
+    html = load_page(URL)
+
+    if html:
+        print("HTML loaded successfully")
+        return html
+    else:
+        print("Error while loading HTML")
+
+
+html = get_html()
 
 
 def load_data(webpage):
@@ -105,8 +111,6 @@ def load_data(webpage):
         print('Error while loading data.')
 
 data = load_data(html)
-
-print(data)
 
 
 
