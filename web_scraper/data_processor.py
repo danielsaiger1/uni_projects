@@ -1,4 +1,4 @@
-from web_scraper.scraper import Scraper
+from scraper import Scraper
 from selenium import webdriver
 import json
 
@@ -17,7 +17,7 @@ class Dataprocessor:
         self.data = scraper.load_data(html)
 
         return self.data
-    
+        
 
 def main():
     URL = "https://www.hamburg-tourism.de/shoppen-geniessen/restaurants-cafes/restaurants-von-a-bis-z/"
@@ -25,5 +25,7 @@ def main():
     processor = Dataprocessor()
     
     restaurant_data = processor.get_data(URL)
+    
+    print(restaurant_data)
     
 main()

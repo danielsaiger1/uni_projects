@@ -75,28 +75,58 @@ class Scraper:
             teaser_list = soup.find("div", class_="teaserList-inline__page")
 
             listings = teaser_list.find_all("article", class_="listTeaser")
+            
+            cuisine_types = self._fetch_cuisine_types(webpage)
+            
             restaurants: Dict[str, Dict[str, Dict[str, str]]] = {}
 
             for article in listings:
                 name = article.find('h3').text.strip()
+                
                 description = article.find('p').text.strip()
+                
                 link = f"https://www.hamburg-tourism.de{article.find('a')['href']}"
+                
                 features = []
-
                 ul = article.find('ul')  
                 if ul:
                     list_items = ul.find_all('li')
                     for li in list_items:
                         features.append(li.text.strip())
-                    
+                
+                cuisine_type = [i for i in features if i in cuisine_types]
+                
+                type = 'N/A'
+                for i in features:
+                    if i in ['Restaurant', 'Café/Bistro']:
+                        type = i
+                        break
+
                 restaurants[name] = {
                     'description' : description,
+                    'type' : type,
+                    'cuisine_type' : cuisine_type,
                     'features' : features,
                     'link' : link
                 }
+          
             
             print('Data loaded successfully')
             return restaurants
         
         except Exception as e:
             print(f"Error while loading data: {str(e)}")
+        
+    
+    def _fetch_cuisine_types(self, webpage):
+        soup = BeautifulSoup(webpage, "html.parser")
+        cuisine_inputs = soup.find_all('input', {'type': 'checkbox', 'name': 'filter[cuisinetype][]'})
+    
+        self.cuisine_types = [
+            soup.find('label', {'for': elem.get('id')}).text.strip()
+            for elem in cuisine_inputs if elem.get('id')
+        ]
+        return self.cuisine_types
+        
+        
+            
