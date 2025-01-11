@@ -1,32 +1,71 @@
-from bs4 import BeautifulSoup
-from typing import Dict
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-
-
-URL = "https://www.hamburg-tourism.de/shoppen-geniessen/restaurants-cafes/restaurants-von-a-bis-z/"
-
-chrome_options = webdriver.ChromeOptions()
-driver = webdriver.Chrome(options = chrome_options)
-
-driver.get(URL)
-
-button = driver.find_element(By.CSS_SELECTOR, '[data-testid="uc-accept-all-button"]')
-driver.execute_script("arguments[0].click();", button)
-
-expand_teaser = driver.find_element(By.XPATH, "//a[contains(@class, 'readMore__link')]")
-
-# Scrolle das Element in den Sichtbereich
-driver.execute_script("arguments[0].scrollIntoView(true);", expand_teaser)
-
-expand_teaser.click()
-
-page = driver.page_source
+from selenium.common.exceptions import TimeoutException
 
 #selenium nutzen um gesamte liste zu laden
 #Küchenstile etc. auslesen, um erkennung zu ermöglichen
+
+# URL of webpage
+URL = "https://www.hamburg-tourism.de/shoppen-geniessen/restaurants-cafes/restaurants-von-a-bis-z/"
+
+# WebDriver options
+options = webdriver.ChromeOptions()
+options.add_argument("--log-level=3")  # reduces logs to WARN and ERROR 
+driver = webdriver.Chrome(options=options)
+
+def load_page(URL):
+    try:
+        # load webpage
+        driver.get(URL)
+
+        # wait until consent banner is shown
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "#usercentrics-root"))
+        )
+
+        # deny consent banner
+        shadow_host = driver.find_element(By.CSS_SELECTOR, "#usercentrics-root")
+        shadow_root = shadow_host.shadow_root
+        deny_button = shadow_root.find_element(By.CSS_SELECTOR, "button[data-testid='uc-deny-all-button']")
+        deny_button.click()
+
+        # expand listings
+        expand_teaser = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, "//a[contains(text(), 'Ganze Liste anzeigen')]"))
+        )
+        expand_teaser.click()
+
+        
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "div.result-item"))
+        )
+
+        page = driver.page_source
+        return page
+
+    except TimeoutException:
+        print("A timeout has occurred.")
+        return None
+
+    finally:
+        driver.quit()
+
+
+page = load_page(URL)
+
+if page:
+    print("Site loaded successfully")
+else:
+    print("Error while loading site")
+
+
+
+
+
+
+
 
 
 soup = BeautifulSoup(page, "html.parser")
@@ -55,7 +94,7 @@ for article in listings:
     restaurants[name]['features'] = features
 
 
-print(restaurants['A Varina'])
+print(restaurants['Zum Anker'])
 
 
 
