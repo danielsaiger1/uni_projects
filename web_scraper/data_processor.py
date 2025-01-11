@@ -1,14 +1,29 @@
-from scraperOOP import Scraper
+from web_scraper.scraper import Scraper
 from selenium import webdriver
+import json
 
-URL = "https://www.hamburg-tourism.de/shoppen-geniessen/restaurants-cafes/restaurants-von-a-bis-z/"
-options = webdriver.ChromeOptions()
-options.add_argument("--log-level=3")  # reduces logs to WARN and ERROR 
-driver = webdriver.Chrome(options=options)
+class Dataprocessor:
+    def get_data(self, URL):
+        
+        options = webdriver.ChromeOptions()
+        options.add_argument("--log-level=3")  # reduces logs to WARN and ERROR 
+        
+        driver = webdriver.Chrome(options=options)
 
-scraper = Scraper(URL, options, driver)
-html = scraper.load_page_raw()
+        scraper = Scraper(URL, options, driver)
+        
+        html = scraper.load_page_raw()
 
-data = scraper.load_data(html)
+        self.data = scraper.load_data(html)
 
-print(data)
+        return self.data
+    
+
+def main():
+    URL = "https://www.hamburg-tourism.de/shoppen-geniessen/restaurants-cafes/restaurants-von-a-bis-z/"
+    
+    processor = Dataprocessor()
+    
+    restaurant_data = processor.get_data(URL)
+    
+main()
