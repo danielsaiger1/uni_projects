@@ -7,13 +7,13 @@ VALUES
     ('WP-HY-005', 'Hybrid');
 
 
-INSERT INTO fertigungslinie (bezeichnung, max_cap)
+INSERT INTO fertigungslinie (bezeichnung)
 Values 
-    ('Linie 1', 16000),
-    ('Linie 2', 15000),
-    ('Linie 3', 17000),
-    ('Linie 4', 16500),
-    ('Linie 5', 16200);
+    ('Linie 1'),
+    ('Linie 2'),
+    ('Linie 3'),
+    ('Linie 4'),
+    ('Linie 5');
 
 
 INSERT INTO waermepumpe_fertigungslinie (waermepumpe_id, fertigungslinie_id)
