@@ -4,6 +4,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from bs4 import BeautifulSoup
+import requests
 from typing import Dict
 
 class Scraper:
@@ -48,7 +49,6 @@ class Scraper:
             shadow_root = shadow_host.shadow_root
             deny_button = shadow_root.find_element(By.CSS_SELECTOR, "button[data-testid='uc-deny-all-button']")
             deny_button.click()
-            
         except:
             print("No consent banner found.")       
     
@@ -73,12 +73,14 @@ class Scraper:
             soup = BeautifulSoup(webpage, "html.parser")
 
             teaser_list = soup.find("div", class_="teaserList-inline__page")
+            if not teaser_list:
+                raise ValueError("Keine Teaser-Liste gefunden")
 
             listings = teaser_list.find_all("article", class_="listTeaser")
             
             cuisine_types = self._fetch_cuisine_types(webpage)
             
-            restaurants: Dict[str, Dict[str, Dict[str, str]]] = {}
+            restaurants: Dict[str, Dict[str, str]] = {}
 
             for article in listings:
                 name = article.find('h3').text.strip()
@@ -87,6 +89,12 @@ class Scraper:
                 
                 link = f"https://www.hamburg-tourism.de{article.find('a')['href']}"
                 
+                location, sub_link = "N/A", "N/A"
+                if link:
+                        subpage = requests.get(link)
+                        if subpage.status_code == 200:
+                            location, sub_link = self._get_subinfo(subpage)
+
                 features = []
                 ul = article.find('ul')  
                 if ul:
@@ -106,8 +114,10 @@ class Scraper:
                     'description' : description,
                     'type' : type,
                     'cuisine_type' : cuisine_type,
+                    'location' : location,
                     'features' : features,
-                    'link' : link
+                    'link' : link,
+                    'sublink': sub_link
                 }
           
             
@@ -127,6 +137,26 @@ class Scraper:
             for elem in cuisine_inputs if elem.get('id')
         ]
         return self.cuisine_types
+    
+    def _get_subinfo(self, subpage):
+        soup = BeautifulSoup(subpage.text, "html.parser")
+        contact_block = soup.find('div', class_='contact__address')
+        divs = contact_block.find_all('div', class_='contact__address__informationBundle')
+        
+        if len(divs) > 0:
+            first_bundle = divs[0]
+            text_content = first_bundle.get_text(strip=True)
+            if text_content:
+                self.adress = text_content
+                
+        # Zweites Bundle (für den Link)
+        if len(divs) > 1:
+            second_bundle = divs[1]
+            link = second_bundle.find('a')
+            if link and 'href' in link.attrs:
+                self.link = link['href']
+                            
+        return self.adress, self.link
         
         
             
