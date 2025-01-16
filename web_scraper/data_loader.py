@@ -59,6 +59,6 @@ def main():
         processor.save_data(restaurant_data)
     else:
         print("Failed to retrieve data.")
-
+    
 if __name__ == "__main__":
     main()
