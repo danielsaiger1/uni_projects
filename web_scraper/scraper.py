@@ -82,7 +82,7 @@ class Scraper:
             
             restaurants: Dict[str, Dict[str, str]] = {}
 
-            for article in listings:
+            for idx, article in enumerate(listings):
                 name = article.find('h3').text.strip()
                 
                 description = article.find('p').text.strip()
@@ -110,7 +110,8 @@ class Scraper:
                         type = i
                         break
 
-                restaurants[name] = {
+                restaurants[idx] = {
+                    'name' : name,
                     'description' : description,
                     'type' : type,
                     'cuisine_type' : cuisine_type,

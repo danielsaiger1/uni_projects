@@ -1,4 +1,5 @@
 from datetime import datetime
+import pandas as pd
 import json
 
 class Processor:
@@ -13,12 +14,19 @@ class Processor:
                 print("Data loaded successfully")
                 return self.data
         except Exception as e:
-            print(f"Data not found. Check {e}")
+            print(f"Data not found. Error: {e}")
             return None
+    
+    def json_to_df(self, data_input):
+        dataframe = pd.json_normalize(data_input)
+        return dataframe
         
 def main():
     processor = Processor('./output')
-    data = processor.load_data()
+    data_raw = processor.load_data()
+    df = processor.json_to_df(data_raw)
+    
+    print(df.head())
 
 if __name__ == "__main__":
     main()
