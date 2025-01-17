@@ -1,20 +1,20 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template
 import json
 
 app = Flask(__name__)
 
-# JSON-Daten laden
-with open('./api/data/20250117_data_transformed.json', 'r', encoding='utf-8') as f:
-    json_data = json.load(f)
+with open('./api/data/20250118_data_transformed.json', 'r') as file:
+    data = json.load(file)
+
 
 @app.route('/')
 def index():
-    return render_template('index.html', data=json_data)
+    return render_template('index.html')
 
-@app.route('/api/data')
-def api_data():
-    # JSON-Daten als API-Endpunkt zurückgeben
-    return jsonify(json_data)
+@app.route('/restaurants')
+def restaurants():
+    # Hier geben wir die Daten an das HTML Template weiter
+    return render_template('restaurants.html', restaurants=data)
 
 if __name__ == '__main__':
     app.run(debug=True)

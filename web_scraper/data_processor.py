@@ -1,6 +1,7 @@
 from datetime import datetime
 import pandas as pd
 import json
+from json import loads, dumps
 import re
 import os
 
@@ -58,7 +59,7 @@ class Processor:
             file_path = os.path.join(self.output_path, f'{today}_data_transformed.json')
             
             with open(file_path, 'w') as f:
-                json.dump(input_data, f)
+                json.dump(input_data, f)  # Ensures pretty printing of the JSON data
             
             print(f"Data successfully saved to {file_path}")
         except Exception as e:
@@ -66,7 +67,7 @@ class Processor:
     
             
 def main():
-    input_path = '.\output'
+    input_path = './output'
     output_path = r'.\api\data'
     processor = Processor(input_path, output_path)
     
@@ -76,7 +77,7 @@ def main():
     
     df = processor.transform_addresses(df)
     
-    json_output = df.to_json(orient="records", indent = 2)
+    json_output = loads(df.to_json(orient="records"))
     
     processor.save_data(json_output)
     
