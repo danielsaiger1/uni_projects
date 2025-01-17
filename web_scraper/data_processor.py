@@ -2,10 +2,12 @@ from datetime import datetime
 import pandas as pd
 import json
 import re
+import os
 
 class Processor:
-    def __init__(self, input_path):
+    def __init__(self, input_path, output_path):
         self.input_path = input_path
+        self.output_path = output_path
     
     def load_data(self):
         today = datetime.today().strftime('%Y%m%d')
@@ -46,12 +48,37 @@ class Processor:
         df = df.drop(columns=['location'])
         return df
 
+    def save_data(self, input_data):
+        try:
+            if input_data is None:
+                print("No data to save.")
+                return
+            
+            today = datetime.today().strftime('%Y%m%d')
+            file_path = os.path.join(self.output_path, f'{today}_data_transformed.json')
+            
+            with open(file_path, 'w') as f:
+                json.dump(input_data, f)
+            
+            print(f"Data successfully saved to {file_path}")
+        except Exception as e:
+            print(f"An error occurred while saving data: {e}")
+    
+            
 def main():
-    processor = Processor('./output')
+    input_path = '.\output'
+    output_path = r'.\api\data'
+    processor = Processor(input_path, output_path)
+    
     data_raw = processor.load_data()
+    
     df = processor.json_to_df(data_raw)
     
     df = processor.transform_addresses(df)
+    
+    json_output = df.to_json(orient="records", indent = 2)
+    
+    processor.save_data(json_output)
     
     print(df.head())
 
