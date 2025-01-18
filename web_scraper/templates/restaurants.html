@@ -34,7 +34,7 @@
 <body>
     <h1>Restaurants in Hamburg</h1>
     {% for restaurant in restaurants %}
-        <div class="restaurant">
+        <div class="restaurant_desc_item">
             <h2>{{ restaurant.name }}</h2>
             <p>{{ restaurant.description }}</p>
             <p class="address">{{ restaurant.street }} {{ restaurant.house_number }}, {{ restaurant.postal_code }} {{ restaurant.city }}</p>
