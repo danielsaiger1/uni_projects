@@ -9,7 +9,7 @@ with open('./api/data/20250118_data_transformed.json', 'r') as file:
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', restaurants=data)
 
 @app.route('/restaurants')
 def restaurants():

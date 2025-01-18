@@ -10,48 +10,48 @@
  * Copyright 2011-2022 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
-:root {
-  --bs-blue: #0d6efd;
-  --bs-indigo: #6610f2;
-  --bs-purple: #6f42c1;
-  --bs-pink: #d63384;
-  --bs-red: #dc3545;
-  --bs-orange: #fd7e14;
-  --bs-yellow: #ffc107;
-  --bs-green: #198754;
-  --bs-teal: #1abc9c;
-  --bs-cyan: #0dcaf0;
-  --bs-black: #000;
-  --bs-white: #fff;
-  --bs-gray: #6c757d;
-  --bs-gray-dark: #343a40;
-  --bs-gray-100: #f8f9fa;
-  --bs-gray-200: #e9ecef;
-  --bs-gray-300: #dee2e6;
+ :root {
+  --bs-blue: #005f9e; /* Blau für das Wasser und die Elbe */
+  --bs-indigo: #3c6e91; /* Ein gedämpftes Blau */
+  --bs-purple: #6b5b95; /* Ein zurückhaltendes Violett */
+  --bs-pink: #d63384; /* Optional: Für Akzente */
+  --bs-red: #DA121A /* Rot für das Hamburger Wappen */
+  --bs-orange: #f47b20; /* Warmer Akzentton */
+  --bs-yellow: #ffd700; /* Leuchtendes Gelb für Highlights */
+  --bs-green: #007f5f; /* Grün der Parks und Wälder */
+  --bs-teal: #009688; /* Frische grün-blau-Töne */
+  --bs-cyan: #76c7c0; /* Ein weiches Türkis */
+  --bs-black: #1c1c1c; /* Tiefes Schwarz für moderne Elemente */
+  --bs-white: #ffffff; /* Klassisches Weiß */
+  --bs-gray: #6c757d; /* Mittelgrau für neutrale Hintergründe */
+  --bs-gray-dark: #495057; /* Dunkleres Grau für Texte */
+  --bs-gray-100: #f8f9fa; /* Heller Hintergrundton */
+  --bs-gray-200: #e9ecef; /* Dezentes Hellgrau */
+  --bs-gray-300: #dee2e6; /* Neutraler Grauton */
   --bs-gray-400: #ced4da;
   --bs-gray-500: #adb5bd;
   --bs-gray-600: #6c757d;
   --bs-gray-700: #495057;
   --bs-gray-800: #343a40;
   --bs-gray-900: #212529;
-  --bs-primary: #1abc9c;
-  --bs-secondary: #2c3e50;
-  --bs-success: #198754;
-  --bs-info: #0dcaf0;
-  --bs-warning: #ffc107;
-  --bs-danger: #dc3545;
-  --bs-light: #f8f9fa;
-  --bs-dark: #212529;
-  --bs-primary-rgb: 26, 188, 156;
-  --bs-secondary-rgb: 44, 62, 80;
-  --bs-success-rgb: 25, 135, 84;
-  --bs-info-rgb: 13, 202, 240;
-  --bs-warning-rgb: 255, 193, 7;
-  --bs-danger-rgb: 220, 53, 69;
+  --bs-primary: #005f9e; /* Hauptfarbe: Hamburg-Blau */
+  --bs-secondary: #DA121A; /* Sekundärfarbe: Hamburg-Rot */
+  --bs-success: #007f5f; /* Grün für positive Elemente */
+  --bs-info: #76c7c0; /* Hellblau für Informationen */
+  --bs-warning: #ffd700; /* Gelb für Warnungen */
+  --bs-danger: #bf2b33; /* Rot für Fehler */
+  --bs-light: #f8f9fa; /* Leichte Akzente */
+  --bs-dark: #1c1c1c; /* Dunkles Schwarz für moderne Kontraste */
+  --bs-primary-rgb: 0, 95, 158;
+  --bs-secondary-rgb: 218, 18, 26;
+  --bs-success-rgb: 0, 127, 95;
+  --bs-info-rgb: 118, 199, 192;
+  --bs-warning-rgb: 255, 215, 0;
+  --bs-danger-rgb: 191, 43, 51;
   --bs-light-rgb: 248, 249, 250;
-  --bs-dark-rgb: 33, 37, 41;
+  --bs-dark-rgb: 28, 28, 28;
   --bs-white-rgb: 255, 255, 255;
-  --bs-black-rgb: 0, 0, 0;
+  --bs-black-rgb: 28, 28, 28;
   --bs-body-color-rgb: 33, 37, 41;
   --bs-body-bg-rgb: 255, 255, 255;
   --bs-font-sans-serif: "Lato", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -62,7 +62,7 @@
   --bs-body-font-weight: 400;
   --bs-body-line-height: 1.5;
   --bs-body-color: #212529;
-  --bs-body-bg: #fff;
+  --bs-body-bg: #ffffff;
   --bs-border-width: 0.125rem;
   --bs-border-style: solid;
   --bs-border-color: #dee2e6;
@@ -73,11 +73,12 @@
   --bs-border-radius-xl: 1rem;
   --bs-border-radius-2xl: 2rem;
   --bs-border-radius-pill: 50rem;
-  --bs-link-color: #1abc9c;
-  --bs-link-hover-color: #15967d;
+  --bs-link-color: #005f9e;
+  --bs-link-hover-color: #004580;
   --bs-code-color: #d63384;
   --bs-highlight-bg: #fff3cd;
 }
+
 
 *,
 *::before,
@@ -3683,7 +3684,7 @@ textarea.form-control-lg {
 .nav-pills {
   --bs-nav-pills-border-radius: 0.5rem;
   --bs-nav-pills-link-active-color: #fff;
-  --bs-nav-pills-link-active-bg: #1abc9c;
+  --bs-nav-pills-link-active-bg: #fff;
 }
 .nav-pills .nav-link {
   background: none;
@@ -3730,7 +3731,7 @@ textarea.form-control-lg {
   --bs-navbar-padding-x: 0;
   --bs-navbar-padding-y: 0.5rem;
   --bs-navbar-color: rgba(0, 0, 0, 0.55);
-  --bs-navbar-hover-color: rgba(0, 0, 0, 0.7);
+  --bs-navbar-hover-color: rgba(255, 255, 255, 0.7);
   --bs-navbar-disabled-color: rgba(0, 0, 0, 0.3);
   --bs-navbar-active-color: rgba(0, 0, 0, 0.9);
   --bs-navbar-brand-padding-y: 0.3125rem;
@@ -4140,7 +4141,7 @@ textarea.form-control-lg {
 
 .navbar-dark {
   --bs-navbar-color: rgba(255, 255, 255, 0.55);
-  --bs-navbar-hover-color: rgba(255, 255, 255, 0.75);
+  --bs-navbar-hover-color: rgba(0, 0, 0, 0.75);
   --bs-navbar-disabled-color: rgba(255, 255, 255, 0.25);
   --bs-navbar-active-color: #fff;
   --bs-navbar-brand-color: #fff;
@@ -10907,13 +10908,13 @@ html {
   color: #fff;
 }
 #mainNav .navbar-nav li.nav-item a.nav-link:hover {
-  color: #1abc9c;
+  color: #bfbdbd;
 }
 #mainNav .navbar-nav li.nav-item a.nav-link:active, #mainNav .navbar-nav li.nav-item a.nav-link:focus {
   color: #fff;
 }
 #mainNav .navbar-nav li.nav-item a.nav-link.active {
-  color: #1abc9c;
+  color: #bfbdbd;
 }
 #mainNav .navbar-toggler {
   font-size: 80%;
@@ -10935,11 +10936,11 @@ html {
   }
   #mainNav .navbar-nav > li.nav-item > a.nav-link.active {
     color: #fff;
-    background: #1abc9c;
+    background: #005f9e;
   }
   #mainNav .navbar-nav > li.nav-item > a.nav-link.active:active, #mainNav .navbar-nav > li.nav-item > a.nav-link.active:focus, #mainNav .navbar-nav > li.nav-item > a.nav-link.active:hover {
     color: #fff;
-    background: #1abc9c;
+    background: #005f9e;
   }
   #mainNav.navbar-shrink {
     padding-top: 0.5rem;
@@ -10979,7 +10980,7 @@ html {
   font-size: 1.25rem;
 }
 .masthead .masthead-avatar {
-  width: 15rem;
+  width: 10rem;
 }
 
 @media (min-width: 992px) {
