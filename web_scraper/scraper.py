@@ -112,11 +112,7 @@ class Scraper:
                 
                 features = [feature for feature in features if feature not in ['Restaurant', 'Café/Bistro', '€€€']]
                 features = [feature if feature else "N/A" for feature in features]
-
                 
-                
-                        
-
                 restaurants[idx] = {
                     'name' : name,
                     'description' : description,

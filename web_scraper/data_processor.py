@@ -30,7 +30,7 @@ class Processor:
     
     def split_address(self, address):
         # Regex für Adresse, die Hausnummer und PLZ zusammen enthält
-        pattern = r"^(.*?)(\d{1,3})(\d{5})\s+(.*)$"
+        pattern = r"^(.*?)(\d{1,3}[a-zA-Z]?)\s+(\d{5})\s+(.*)$"
         match = re.match(pattern, address)
         if match:
             street = match.group(1).strip()
