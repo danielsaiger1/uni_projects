@@ -67,9 +67,13 @@ class Dataprocessor:
     
             
 def main():
-    input_path = './output'
-    output_path = r'.\api\data'
-    processor = Dataprocessor(input_path, output_path)
+    with open("config/dt/config.json", 'r') as config_file:
+        config = json.load(config_file)
+        
+    input_path_read = config.get('input_path_read')
+    output_path_write = config.get('output_path_write')
+    
+    processor = Dataprocessor(input_path_read, output_path_write)
     
     data_raw = processor.load_data()
     

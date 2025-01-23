@@ -152,7 +152,6 @@ class Scraper:
             return {}
 
     def _fetch_cuisine_types(self, webpage: str) -> List[str]:
-        """Extrahiert die verfügbaren Küchenarten von der Seite."""
         soup = BeautifulSoup(webpage, "html.parser")
         cuisine_inputs = soup.find_all('input', {'type': 'checkbox', 'name': 'filter[cuisinetype][]'})
         cuisine_types = [
@@ -162,13 +161,11 @@ class Scraper:
         return cuisine_types
     
     def fetch_subinfo(self, links: List[str]) -> List[Tuple[str, str]]:
-        """Lädt Subpage-Daten parallel."""
         with ThreadPoolExecutor(max_workers=10) as executor:
             results = list(executor.map(self._get_subinfo, links))
         return results
 
     def _get_subinfo(self, link: str) -> Tuple[str, str]:
-        """Lädt Adresse und Sublink von einer Subpage."""
         try:
             response = requests.get(link)
             if response.status_code != 200:

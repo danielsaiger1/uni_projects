@@ -4,6 +4,7 @@ from selenium.common.exceptions import WebDriverException
 from datetime import datetime
 import json
 import os
+import config.dt.config as config
 
 class Dataloader:
     def __init__(self, output_dir='/output'):
@@ -48,8 +49,13 @@ class Dataloader:
             print(f"An error occurred while saving data: {e}")
 
 def main():
-    URL = "https://www.hamburg-tourism.de/shoppen-geniessen/restaurants-cafes/restaurants-von-a-bis-z/"
-    loader = Dataloader(output_dir='output') 
+    with open("config/dt/config.json", 'r') as config_file:
+        config = json.load(config_file)
+        
+    URL = config.get('URL')
+    output_dir = config.get('output_dir')
+    
+    loader = Dataloader(output_dir) 
 
     print("Starting data processing...")
     restaurant_data = loader.get_data(URL)
