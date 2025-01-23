@@ -5,7 +5,7 @@ from json import loads, dumps
 import re
 import os
 
-class Processor:
+class Dataprocessor:
     def __init__(self, input_path, output_path):
         self.input_path = input_path
         self.output_path = output_path
@@ -69,7 +69,7 @@ class Processor:
 def main():
     input_path = './output'
     output_path = r'.\api\data'
-    processor = Processor(input_path, output_path)
+    processor = Dataprocessor(input_path, output_path)
     
     data_raw = processor.load_data()
     

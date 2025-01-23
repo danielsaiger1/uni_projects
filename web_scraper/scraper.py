@@ -1,11 +1,14 @@
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from bs4 import BeautifulSoup
+from concurrent.futures import ThreadPoolExecutor
 import requests
-from typing import Dict
+from typing import Dict, List, Tuple
+import logging
 
 class Scraper:
     def __init__(self, URL, options, driver):
@@ -13,25 +16,43 @@ class Scraper:
         self.options = options
         self.driver = driver
         
-    def load_page_raw(self):
+    def create_driver(self):
+        options = Options()
+        driver = webdriver.Chrome(options=options)
+        print("Driver created.")
+        return driver
+    
+    def load_page_raw(self) -> str:
+        """
+        Lädt die Seite und gibt den rohen HTML-Code zurück.
+        """
         try:
-            # load webpage
-            self.driver.get(self.URL)
-            self.driver.implicitly_wait(10) 
+            if not self.driver:
+                self.driver = self.create_driver()
             
-            # click consent banner
+            logging.info(f"Lade Seite: {self.URL}")
+            self.driver.get(self.URL)
+            self.driver.implicitly_wait(10)
+            
+            # Consent-Banner behandeln
             self._handle_consent_banner()
 
+            # Anzahl der ursprünglichen Divs auf der Seite speichern
             self.initial_divs = self.driver.find_elements(By.CSS_SELECTOR, 'div[data-list-id]')
 
-            # expand listings
+            # Listings erweitern
             self._expand_listings()
         
             self.page_raw = self.driver.page_source
+            logging.info("Seite erfolgreich geladen.")
             return self.page_raw
 
         except TimeoutException:
-            print("A timeout has occurred.")
+            logging.error("Ein Timeout ist aufgetreten.")
+            return None
+
+        except Exception as e:
+            logging.error(f"Fehler beim Laden der Seite: {e}")
             return None
 
         finally:
@@ -68,32 +89,31 @@ class Scraper:
         if self.driver:
             self.driver.quit()
             
-    def load_data(self, webpage):
+    def load_data(self, webpage: str) -> Dict[int, Dict[str, str]]:
+        """Parst die Hauptseite und lädt Subpage-Daten parallel."""
         try:
             soup = BeautifulSoup(webpage, "html.parser")
-
             teaser_list = soup.find("div", class_="teaserList-inline__page")
             if not teaser_list:
                 raise ValueError("Keine Teaser-Liste gefunden")
 
             listings = teaser_list.find_all("article", class_="listTeaser")
-            
             cuisine_types = self._fetch_cuisine_types(webpage)
-            
-            restaurants: Dict[str, Dict[str, str]] = {}
+            restaurants: Dict[int, Dict[str, str]] = {}
 
-            for idx, article in enumerate(listings):
-                name = article.find('h3').text.strip()
-                
-                description = article.find('p').text.strip()
-                
-                link = f"https://www.hamburg-tourism.de{article.find('a')['href']}"
-                
-                location, sub_link = "N/A", "N/A"
-                if link:
-                        subpage = requests.get(link)
-                        if subpage.status_code == 200:
-                            location, sub_link = self._get_subinfo(subpage)
+            # Subpage-Links sammeln
+            links = [
+                f"https://www.hamburg-tourism.de{article.find('a')['href']}"
+                for article in listings if article.find('a')
+            ]
+
+            # Subpage-Daten parallel laden
+            subinfo_results = self.fetch_subinfo(links)
+
+            for idx, (article, subinfo) in enumerate(zip(listings, subinfo_results)):
+                name = article.find('h3').text.strip() if article.find('h3') else "N/A"
+                description = article.find('p').text.strip() if article.find('p') else "N/A"
+                location, sub_link = subinfo
 
                 features = []
                 ul = article.find('ul')  
@@ -101,7 +121,7 @@ class Scraper:
                     list_items = ul.find_all('li')
                     for li in list_items:
                         features.append(li.text.strip())
-                
+
                 cuisine_type = [i for i in features if i in cuisine_types]
                 
                 type = 'N/A'
@@ -109,58 +129,64 @@ class Scraper:
                     if i in ['Restaurant', 'Café/Bistro']:
                         type = i
                         break
-                
+
                 features = [feature for feature in features if feature not in ['Restaurant', 'Café/Bistro', '€€€']]
                 features = [feature if feature else "N/A" for feature in features]
-                
+
                 restaurants[idx] = {
-                    'name' : name,
-                    'description' : description,
-                    'type' : type,
-                    'cuisine_type' : cuisine_type,
-                    'location' : location,
-                    'features' : features,
-                    'link' : link,
+                    'name': name,
+                    'description': description,
+                    'type': type,
+                    'cuisine_type': cuisine_type,
+                    'location': location,
+                    'features': features,
+                    'link': links[idx],
                     'sublink': sub_link
                 }
-          
-            
-            print('Data loaded successfully')
+
+            logging.info("Daten erfolgreich geladen.")
             return restaurants
         
         except Exception as e:
-            print(f"Error while loading data: {str(e)}")
-        
-    
-    def _fetch_cuisine_types(self, webpage):
+            logging.error(f"Fehler beim Laden der Daten: {e}")
+            return {}
+
+    def _fetch_cuisine_types(self, webpage: str) -> List[str]:
+        """Extrahiert die verfügbaren Küchenarten von der Seite."""
         soup = BeautifulSoup(webpage, "html.parser")
         cuisine_inputs = soup.find_all('input', {'type': 'checkbox', 'name': 'filter[cuisinetype][]'})
-    
-        self.cuisine_types = [
+        cuisine_types = [
             soup.find('label', {'for': elem.get('id')}).text.strip()
             for elem in cuisine_inputs if elem.get('id')
         ]
-        return self.cuisine_types
+        return cuisine_types
     
-    def _get_subinfo(self, subpage):
-        soup = BeautifulSoup(subpage.text, "html.parser")
-        contact_block = soup.find('div', class_='contact__address')
-        divs = contact_block.find_all('div', class_='contact__address__informationBundle')
-        
-        if len(divs) > 0:
-            first_bundle = divs[0]
-            text_content = first_bundle.get_text(strip=True)
-            if text_content:
-                self.adress = text_content
-                
-        # Zweites Bundle (für den Link)
-        if len(divs) > 1:
-            second_bundle = divs[1]
-            link = second_bundle.find('a')
-            if link and 'href' in link.attrs:
-                self.link = link['href']
-                            
-        return self.adress, self.link
+    def fetch_subinfo(self, links: List[str]) -> List[Tuple[str, str]]:
+        """Lädt Subpage-Daten parallel."""
+        with ThreadPoolExecutor(max_workers=10) as executor:
+            results = list(executor.map(self._get_subinfo, links))
+        return results
+
+    def _get_subinfo(self, link: str) -> Tuple[str, str]:
+        """Lädt Adresse und Sublink von einer Subpage."""
+        try:
+            response = requests.get(link)
+            if response.status_code != 200:
+                return "N/A", "N/A"
+
+            soup = BeautifulSoup(response.text, "html.parser")
+            contact_block = soup.find('div', class_='contact__address')
+            if not contact_block:
+                return "N/A", "N/A"
+
+            address = contact_block.find('div', class_='contact__address__informationBundle').get_text(strip=True)
+            link_div = contact_block.find('a')
+            sub_link = link_div['href'] if link_div else "N/A"
+
+            return address, sub_link
+        except Exception as e:
+            logging.error(f"Fehler beim Laden der Subpage {link}: {e}")
+            return "N/A", "N/A"
         
         
             

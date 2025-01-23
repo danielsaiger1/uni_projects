@@ -5,7 +5,7 @@ from datetime import datetime
 import json
 import os
 
-class Dataprocessor:
+class Dataloader:
     def __init__(self, output_dir='/output'):
         self.output_dir = output_dir
         os.makedirs(self.output_dir, exist_ok=True)
@@ -49,14 +49,14 @@ class Dataprocessor:
 
 def main():
     URL = "https://www.hamburg-tourism.de/shoppen-geniessen/restaurants-cafes/restaurants-von-a-bis-z/"
-    processor = Dataprocessor(output_dir='output') 
+    loader = Dataloader(output_dir='output') 
 
     print("Starting data processing...")
-    restaurant_data = processor.get_data(URL)
+    restaurant_data = loader.get_data(URL)
 
     if restaurant_data:
         print("Data successfully retrieved.")
-        processor.save_data(restaurant_data)
+        loader.save_data(restaurant_data)
     else:
         print("Failed to retrieve data.")
     

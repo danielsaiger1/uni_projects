@@ -1,5 +1,4 @@
 document.getElementById('searchField').addEventListener('input', function () {
-    console.log("Search.js geladen");
     const searchValue = this.value.toLowerCase();
     const items = document.querySelectorAll('.rest_item');
     let hasVisibleItems = false;
@@ -14,6 +13,11 @@ document.getElementById('searchField').addEventListener('input', function () {
         }
     });
 
-    // Zeige "Keine Ergebnisse"-Meldung, falls keine sichtbaren Elemente existieren
+    // Scroll nach oben, wenn ein Suchergebnis gefunden wird
+    if (hasVisibleItems) {
+        document.querySelector('.container').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Zeige "Keine Ergebnisse"-Meldung
     document.getElementById('noResults').style.display = hasVisibleItems ? 'none' : 'block';
-}); 
+});
