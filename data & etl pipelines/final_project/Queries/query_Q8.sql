@@ -1,4 +1,4 @@
-SELECT c.MaritalStatus, st.SalesTerritoryCountry, SUM(f.TotalProductCost) total_sales_amount, COUNT(f.salesordernumber) total_orders
+SELECT c.MaritalStatus, st.SalesTerritoryCountry, CAST(SUM(f.SalesAmount) AS INT) total_sales_amount, COUNT(f.salesordernumber) total_orders
 FROM FactInternetSales f
 JOIN 
 	DimSalesTerritory st
