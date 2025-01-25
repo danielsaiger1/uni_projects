@@ -1,7 +1,7 @@
 -- Question 3.1.
 SELECT TOP 10 
     i.item_name,
-    SUM(CAST(f.total_price AS FLOAT)) AS total_sales_amount
+    SUM(CAST(f.total_price AS INT)) AS total_sales_amount
 FROM fact_table f 
 JOIN 
     item_dim i 
@@ -10,25 +10,23 @@ ON
 GROUP BY i.item_name
 ORDER BY total_sales_amount DESC;
 
-
-
 -- Question 3.2.
 SELECT TOP 10 i.item_name, SUM(CAST(f.quantity AS int)) total_quantity_sold
-FROM item_dim i
+FROM fact_table f 
 JOIN 
-	fact_table f 
+	item_dim i
 ON 
-	i.item_key = f.item_key
+	f.item_key = i.item_key
 GROUP BY i.item_name
 ORDER BY total_quantity_sold DESC
 
 --Question 3.3.
 SELECT TOP 5 i.man_country, SUM(CAST(f.quantity AS int)) total_quantity_sold, SUM(CAST(f.total_price AS float)) total_sales_amount
-FROM item_dim i
+FROM fact_table f 
 JOIN 
-	fact_table f 
+	item_dim i
 ON 
-	i.item_key = f.item_key
+	f.item_key = i.item_key
 GROUP BY i.man_country
 ORDER BY total_sales_amount DESC
 
