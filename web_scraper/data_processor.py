@@ -55,6 +55,9 @@ class Dataprocessor:
                 print("No data to save.")
                 return
             
+            if not os.path.exists(self.output_path):
+                os.makedirs(self.output_path)
+                
             today = datetime.today().strftime('%Y%m%d')
             file_path = os.path.join(self.output_path, f'{today}_data_transformed.json')
             

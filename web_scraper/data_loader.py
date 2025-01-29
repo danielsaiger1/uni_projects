@@ -4,10 +4,9 @@ from selenium.common.exceptions import WebDriverException
 from datetime import datetime
 import json
 import os
-import config.dt.config as config
 
 class Dataloader:
-    def __init__(self, output_dir='/output'):
+    def __init__(self, output_dir):
         self.output_dir = output_dir
         os.makedirs(self.output_dir, exist_ok=True)
 
@@ -39,6 +38,10 @@ class Dataloader:
                 return
             
             today = datetime.today().strftime('%Y%m%d')
+            
+            if not os.path.exists(self.output_dir):
+                os.makedirs(self.output_dir)
+                
             file_path = os.path.join(self.output_dir, f'{today}_output_data.json')
             
             with open(file_path, 'w') as f:

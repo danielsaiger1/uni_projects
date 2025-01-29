@@ -1,9 +1,15 @@
 from flask import Flask, render_template
 import json
+import os
+from datetime import datetime
 
 app = Flask(__name__)
 
-with open('./api/data/20250118_data_transformed.json', 'r') as file:
+today = datetime.today().strftime('%Y%m%d')
+    
+file_path = f'./api/data/{today}_data_transformed.json'
+
+with open(file_path, 'r') as file:
     data = json.load(file)
 
 
