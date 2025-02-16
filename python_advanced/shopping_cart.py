@@ -1,9 +1,3 @@
-#####################
-#                   #
-#   Daniel Saiger   #
-#                   #
-#####################
-
 import datetime as dt
 
 items = []
